@@ -1,0 +1,10 @@
+{
+    "name": "Norway Travel Site",
+    "short_name": "NTS",
+    "start_url": "/index.html",
+    "description": "This apllication is a guide through norways wonders",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#A3D5FF",
+    "theme_color": "#FFFFFF"
+}
