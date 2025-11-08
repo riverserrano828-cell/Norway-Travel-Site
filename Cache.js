@@ -40,3 +40,11 @@ self.addEventListener('install', event => {
     }));
 });
 
+
+self.addEventListener('fetch', event => {
+    event.respondWith(
+            caches.match(event.request).then(cacheRes => {
+                return cacheRes || fetch(event.request);
+            })
+            );
+});
