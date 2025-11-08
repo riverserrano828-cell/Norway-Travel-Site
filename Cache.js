@@ -35,13 +35,9 @@ const assets = [
 ];
 
 self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(cacheName).then((cache) => {
-            console.log('Service Worker: Caching shell assets');
-            // cache.addAll will fail if any one resource fails to fetch/cache
-            return cache.addAll(assets); 
-        })
-    );
+    event.waitUntil(caches.open(cacheName).then((cache) => {
+        return cache.addAll(assets);
+    }));
 });
 
 
