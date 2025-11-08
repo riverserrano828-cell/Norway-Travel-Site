@@ -35,16 +35,39 @@ const assets = [
 ];
 
 self.addEventListener('install', event => {
-    event.waitUntil(caches.open(cacheName).then((cache) => {
-        return cache.addAll(assets);
-    }));
+    event.waitUntil(
+        caches.open(cacheName).then((cache) => {
+            console.log('Service Worker: Caching shell assets');
+            // This attempts to fetch and cache all listed assets
+            return cache.addAll(assets); 
+        })
+    );
+});
+
+
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(keys => {
+            console.log('Service Worker: Cleaning old caches');
+            return Promise.all(keys
+                // Filter out the current cache name
+                .filter(key => key !== cacheName)
+                // Delete the remaining old caches
+                .map(key => caches.delete(key))
+            );
+        })
+    );
 });
 
 
 self.addEventListener('fetch', event => {
-    event.respondWith(
+    // We only want to handle GET requests
+    if (event.request.method === 'GET') { 
+        event.respondWith(
             caches.match(event.request).then(cacheRes => {
+                // Return resource from cache, OR fetch from network
                 return cacheRes || fetch(event.request);
             })
-            );
+        );
+    }
 });
